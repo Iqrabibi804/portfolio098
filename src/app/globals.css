@@ -1,23 +1,25 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #070809;
+  --color-background: #050505;
   --color-foreground: #F3F4EF;
   --color-muted: #777D84;
-  --color-accent: #C8FF38;
-  --color-accent-secondary: #7766FF;
-  --color-glow: #D7FF7A;
-  --color-surface: #101215;
+  --color-accent: #7766ff;
+  --color-accent-light: #9d8fff;
+  --color-accent-secondary: #5544cc;
+  --color-glow: #7766ff;
+  --color-surface: #0d0d12;
 }
 
 :root {
-  --background: #070809;
+  --background: #050505;
   --foreground: #F3F4EF;
   --muted: #777D84;
-  --accent: #C8FF38;
-  --accent-secondary: #7766FF;
-  --glow: #D7FF7A;
-  --surface: #101215;
+  --accent: #7766ff;
+  --accent-light: #9d8fff;
+  --accent-secondary: #5544cc;
+  --glow: #7766ff;
+  --surface: #0d0d12;
 }
 
 body {
@@ -33,10 +35,10 @@ body {
   body { cursor: auto; }
 }
 
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--background); }
-::-webkit-scrollbar-thumb { background: var(--surface); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #050505; }
+::-webkit-scrollbar-thumb { background: #7766ff30; border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: #7766ff60; }
 
 *:focus-visible {
   outline: 2px solid var(--accent);
@@ -44,8 +46,8 @@ body {
 }
 
 ::selection {
-  background-color: var(--accent);
-  color: var(--background);
+  background-color: #7766ff50;
+  color: #fff;
 }
 
 /* Marquee animation */
@@ -58,20 +60,190 @@ body {
   animation: marquee 25s linear infinite;
 }
 
+/* Shine effect for cards */
+@keyframes shine {
+  0% { transform: translateX(-150%) skewX(-12deg); }
+  100% { transform: translateX(250%) skewX(-12deg); }
+}
+
+.animate-shine {
+  animation: shine 1.5s ease-in-out;
+}
+
 /* Subtle noise texture */
 .noise-bg::after {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
   pointer-events: none;
   z-index: 1;
 }
 
-/* Glow pulse */
+/* Hero section stacking */
+#hero {
+  isolation: isolate;
+}
+
+/* Hero scanline sweep animation */
+@keyframes scanline {
+  0% { top: 0%; opacity: 0; }
+  5% { opacity: 1; }
+  95% { opacity: 0.3; }
+  100% { top: 100%; opacity: 0; }
+}
+
+.animate-scanline {
+  animation: scanline 8s linear infinite;
+  top: 0;
+}
+
+
+.hero-noise-svg {
+  position: absolute !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden;
+}
+
+/* Glow pulse - purple */
 @keyframes glow-pulse {
-  0%, 100% { box-shadow: 0 0 8px rgba(200, 255, 56, 0.3); }
-  50% { box-shadow: 0 0 20px rgba(200, 255, 56, 0.6); }
+  0%, 100% { box-shadow: 0 0 8px rgba(119, 102, 255, 0.3); }
+  50% { box-shadow: 0 0 24px rgba(119, 102, 255, 0.6); }
 }
 
 .glow-pulse { animation: glow-pulse 3s ease-in-out infinite; }
+
+/* ─── BUILD MODE — Immersive Architect Overlay ─────────────────────── */
+.build-mode {
+  position: relative;
+}
+
+/* Deep purple blueprint grid */
+.build-mode::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9990;
+  background-image: 
+    linear-gradient(rgba(119,102,255,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(119,102,255,0.06) 1px, transparent 1px),
+    linear-gradient(rgba(119,102,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(119,102,255,0.025) 1px, transparent 1px);
+  background-size: 80px 80px, 80px 80px, 16px 16px, 16px 16px;
+}
+
+/* Vivid purple scan line sweeping down */
+.build-mode::after {
+  content: "";
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, #7766ff 30%, #c8b8ff 50%, #7766ff 70%, transparent 100%);
+  box-shadow: 0 0 20px 4px rgba(119,102,255,0.6), 0 0 60px 8px rgba(119,102,255,0.2);
+  z-index: 9991;
+  pointer-events: none;
+  animation: build-scan 3s linear infinite;
+}
+
+@keyframes build-scan {
+  0% { top: 0%; opacity: 0; }
+  3% { opacity: 1; }
+  97% { opacity: 0.8; }
+  100% { top: 100%; opacity: 0; }
+}
+
+/* HUD element outlines on all interactive elements */
+.build-mode *[class*="border"],
+.build-mode button,
+.build-mode a,
+.build-mode section {
+  outline: 1px solid rgba(119, 102, 255, 0.08) !important;
+  outline-offset: 2px;
+}
+
+/* Build mode top status bar */
+.build-mode-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9995;
+  height: 32px;
+  background: linear-gradient(90deg, #0d0010 0%, #0a0018 50%, #0d0010 100%);
+  border-bottom: 1px solid #7766ff30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  font-family: monospace;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  color: #7766ff80;
+}
+
+.build-mode-bar::before {
+  content: "◆ BUILD MODE // ARCHITECT OVERLAY // ALL SYSTEMS ACTIVE";
+}
+
+.build-mode-bar::after {
+  content: attr(data-status);
+}
+
+/* Scan line animation */
+@keyframes scan-line {
+  0% { top: 0%; }
+  100% { top: 100%; }
+}
+
+/* Glitch text */
+@keyframes glitch {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(2px, -1px); }
+  60% { transform: translate(-1px, -2px); }
+  80% { transform: translate(1px, 1px); }
+}
+
+.animate-glitch {
+  animation: glitch 0.3s ease-in-out infinite;
+}
+
+/* Film-grain shimmer */
+@keyframes grain-drift {
+  0%   { transform: translate(0, 0); }
+  20%  { transform: translate(-2px, 1px); }
+  40%  { transform: translate(2px, -1px); }
+  60%  { transform: translate(-1px, 2px); }
+  80%  { transform: translate(1px, -2px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Contact section floating animation */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(1deg); }
+}
+
+.animate-float-slow {
+  animation: float-slow 6s ease-in-out infinite;
+}
+
+/* Terminal cursor blink */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.animate-blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* Purple accent glow on hover for interactive elements */
+.hover-glow:hover {
+  box-shadow: 0 0 20px rgba(119, 102, 255, 0.25);
+}
+
+

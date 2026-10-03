@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { SmoothScroll } from "@/components/SmoothScroll";
-import { CustomCursor } from "@/components/CustomCursor";
+import { CustomCursor } from "@/components/ui/CustomCursor";
+import { SystemStatusUI } from "@/components/ui/SystemStatusUI";
+import { PageTransition } from "@/components/ui/PageTransition";
+import { GlobalStateProvider } from "@/components/providers/GlobalStateProvider";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 
@@ -28,10 +31,14 @@ export default function RootLayout({
         className={`${spaceGrotesk.variable} font-sans antialiased bg-background text-foreground overflow-x-hidden`}
       >
         <SmoothScroll>
-          <CustomCursor />
-          <Navigation />
-          {children}
-          <Footer />
+          <GlobalStateProvider>
+            <CustomCursor />
+            <SystemStatusUI />
+            <PageTransition />
+            <Navigation />
+            {children}
+            <Footer />
+          </GlobalStateProvider>
         </SmoothScroll>
       </body>
     </html>
